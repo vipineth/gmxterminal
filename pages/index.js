@@ -1,41 +1,16 @@
-import { Fragment, useEffect, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
-import {
-  BellIcon,
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
-  HomeIcon,
-  InboxIcon,
-  MenuAlt2Icon,
-  UsersIcon,
-  XIcon,
-} from "@heroicons/react/outline";
-import { SearchIcon } from "@heroicons/react/solid";
+import { useState } from "react";
+
 import { useDailyVolume } from "../hooks/useDailyVolume";
 import Sidebar from "../components/common/Sidebar";
 import Header from "../components/common/Header";
-
-const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Team", href: "#", icon: UsersIcon, current: false },
-  { name: "Projects", href: "#", icon: FolderIcon, current: false },
-  { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
-  { name: "Documents", href: "#", icon: InboxIcon, current: false },
-  { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import VolumeChart from "components/home/VolumeChart";
+import Overview from "components/home/Overview";
+import Assets from "components/home/Assets";
+import Layout from "components/common/layout";
 
 export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  let [value] = useDailyVolume();
-
-  useEffect(() => {
-    console.log(value);
-  });
+  let [dailyVolume, isLoading] = useDailyVolume();
 
   return (
     <div className="h-screen flex overflow-hidden bg-gray-100">
@@ -44,20 +19,21 @@ export default function Example() {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <main className="flex-1 relative overflow-y-auto focus:outline-none">
           <div className="py-6">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-              <h1 className="text-2xl font-semibold text-gray-900">
-                Dashboard
-              </h1>
-            </div>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-              {/* Replace with your content */}
+            <Layout>
+              <Overview />
+              <h2 className="text-lg leading-6 font-medium text-gray-900 mt-6">
+                Daily Volume
+              </h2>
               <div className="py-4">
-                <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">
-                  Hello
+                <div className="shadow px-4 border rounded-lg h-96 bg-white">
+                  <VolumeChart
+                    dailyVolume={dailyVolume}
+                    isLoading={isLoading}
+                  />
                 </div>
               </div>
-              {/* /End replace */}
-            </div>
+              <Assets />
+            </Layout>
           </div>
         </main>
       </div>

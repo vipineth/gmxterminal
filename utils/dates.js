@@ -39,7 +39,7 @@ export const toNiceDate = (date) => {
   }
   return format(fromUnixTime(date), "d MMM");
 };
-export const getSmallAddress = (address, width = 6) => {
+export const getSmallAddress = (address, width = 5) => {
   if (!address) return;
   return address.slice(0, width) + "..." + address.slice(-width);
 };

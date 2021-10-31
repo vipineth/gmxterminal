@@ -1,19 +1,26 @@
-import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Line,
+  YAxis,
+  Legend,
+} from "recharts";
 import { DefaultTooltipContent } from "recharts/lib/component/DefaultTooltipContent";
 
 import { toK, toNiceDate, toNiceDateYear } from "utils/dates";
 
-const CustomBar = ({ x, y, width, height, fill }) => {
+function CustomBar({ x, y, width, height, fill }) {
   return (
     <g>
       <rect x={x} y={y} fill={fill} width={width} height={height} rx="2" />
     </g>
   );
-};
+}
 
-function Chart(props) {
-  let dailyVolume = props.data?.slice(-props.range);
-
+function VolumeChart({ dailyVolume, isLoading }) {
   if (!dailyVolume) {
     return <h2>Loading</h2>;
   }
@@ -21,13 +28,20 @@ function Chart(props) {
     <ResponsiveContainer height="100%">
       <BarChart data={dailyVolume}>
         <XAxis
-          dataKey="date"
+          dataKey="timestamp"
           tickFormatter={(d) => toNiceDate(d)}
           tick={{ fontSize: 12, color: "red" }}
           style={{
             fontSize: "0.85rem",
           }}
         />
+        {/* <YAxis dataKey="all" tickFormatter={toK} />
+        <YAxis
+          dataKey="cumulative"
+          orientation="right"
+          yAxisId="right"
+          tickFormatter={toK}
+        /> */}
 
         <Tooltip
           content={<CustomTooltip />}
@@ -43,8 +57,25 @@ function Chart(props) {
           }}
           wrapperStyle={{ top: -70, left: -10 }}
         />
+
         <Bar
-          dataKey="volumeUSD"
+          dataKey="burn"
+          stackId="one"
+          shape={(props) => {
+            return (
+              <CustomBar
+                height={props.height}
+                width={props.width}
+                x={props.x}
+                y={props.y}
+                fill="#DB2777"
+              />
+            );
+          }}
+        />
+        <Bar
+          dataKey="swap"
+          stackId="one"
           shape={(props) => {
             return (
               <CustomBar
@@ -57,20 +88,85 @@ function Chart(props) {
             );
           }}
         />
+        <Bar
+          dataKey="margin"
+          stackId="one"
+          shape={(props) => {
+            return (
+              <CustomBar
+                height={props.height}
+                width={props.width}
+                x={props.x}
+                y={props.y}
+                fill="#D97706"
+              />
+            );
+          }}
+        />
+        <Bar
+          dataKey="mint"
+          stackId="one"
+          shape={(props) => {
+            return (
+              <CustomBar
+                height={props.height}
+                width={props.width}
+                x={props.x}
+                y={props.y}
+                fill="#4B5563"
+              />
+            );
+          }}
+        />
+        <Line
+          type="monotone"
+          dot={false}
+          strokeWidth={3}
+          stroke="#ee64b8"
+          dataKey="cumulative"
+          yAxisId="right"
+          name="Cumulative"
+        />
+        <Legend />
       </BarChart>
     </ResponsiveContainer>
   );
 }
 
 function CustomTooltip(props) {
-  if (props.payload?.[0] != null) {
-    const newPayload = [
-      {
-        name: "Volume",
-        value: props.payload[0].payload.volumeUSD,
-        color: "black",
-      },
-    ];
+  let values = props.payload.map(({ dataKey, value }) => ({
+    name: dataKey,
+    value,
+    color: "black",
+  }));
+  if (values.length) {
+    const newPayload = values.map((v) => {
+      switch (v.name) {
+        case "mint":
+          return {
+            ...v,
+            name: "GLP Mint 👶",
+          };
+        case "burn":
+          return {
+            ...v,
+            name: "GLP Burn 🔥",
+          };
+        case "margin":
+          return {
+            ...v,
+            name: "Margin Trades",
+          };
+        case "swap":
+          return {
+            ...v,
+            name: "Token Swaps",
+          };
+        default:
+          return {};
+      }
+    });
+
     return <DefaultTooltipContent {...props} payload={newPayload} />;
   }
   return <DefaultTooltipContent {...props} />;
@@ -91,4 +187,4 @@ function Badge(props) {
   );
 }
 
-export default Chart;
+export default VolumeChart;
