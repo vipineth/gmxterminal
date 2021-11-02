@@ -7,10 +7,15 @@ import {
   Line,
   YAxis,
   Legend,
+  CartesianGrid,
+  CartesianAxis,
+  ComposedChart,
+  Text,
 } from "recharts";
 import { DefaultTooltipContent } from "recharts/lib/component/DefaultTooltipContent";
+import { chartLabels, COLORS } from "utils/config";
 
-import { toK, toNiceDate, toNiceDateYear } from "utils/dates";
+import { toK, toKWithoutDollar, toNiceDate, toNiceDateYear } from "utils/dates";
 
 function CustomBar({ x, y, width, height, fill }) {
   return (
@@ -25,8 +30,8 @@ function VolumeChart({ dailyVolume, isLoading }) {
     return <h2>Loading</h2>;
   }
   return (
-    <ResponsiveContainer height="100%">
-      <BarChart data={dailyVolume}>
+    <ResponsiveContainer width="100%">
+      <ComposedChart data={dailyVolume}>
         <XAxis
           dataKey="timestamp"
           tickFormatter={(d) => toNiceDate(d)}
@@ -35,19 +40,31 @@ function VolumeChart({ dailyVolume, isLoading }) {
             fontSize: "0.85rem",
           }}
         />
-        {/* <YAxis dataKey="all" tickFormatter={toK} />
+        <CartesianGrid vertical={false} />
+        <YAxis
+          allowDecimals={false}
+          dataKey="all"
+          axisLine={false}
+          tickLine={2}
+          tick={{ fontSize: 13 }}
+          tickFormatter={toK}
+        />
         <YAxis
           dataKey="cumulative"
           orientation="right"
           yAxisId="right"
+          tick={{ fontSize: 13 }}
+          axisLine={false}
+          tickLine={2}
           tickFormatter={toK}
-        /> */}
+          allowDecimals={false}
+          name="Cumulative"
+        />
 
         <Tooltip
           content={<CustomTooltip />}
           cursor={true}
           formatter={(val) => toK(val, true)}
-          labelFormatter={(label) => <Badge label={toNiceDateYear(label)} />}
           labelStyle={{ paddingTop: 4 }}
           contentStyle={{
             padding: "10px 14px",
@@ -59,23 +76,9 @@ function VolumeChart({ dailyVolume, isLoading }) {
         />
 
         <Bar
-          dataKey="burn"
-          stackId="one"
-          shape={(props) => {
-            return (
-              <CustomBar
-                height={props.height}
-                width={props.width}
-                x={props.x}
-                y={props.y}
-                fill="#DB2777"
-              />
-            );
-          }}
-        />
-        <Bar
           dataKey="swap"
           stackId="one"
+          fill={COLORS[1]}
           shape={(props) => {
             return (
               <CustomBar
@@ -83,7 +86,7 @@ function VolumeChart({ dailyVolume, isLoading }) {
                 width={props.width}
                 x={props.x}
                 y={props.y}
-                fill="#059669"
+                fill={COLORS[1]}
               />
             );
           }}
@@ -91,6 +94,7 @@ function VolumeChart({ dailyVolume, isLoading }) {
         <Bar
           dataKey="margin"
           stackId="one"
+          fill={COLORS[2]}
           shape={(props) => {
             return (
               <CustomBar
@@ -98,7 +102,7 @@ function VolumeChart({ dailyVolume, isLoading }) {
                 width={props.width}
                 x={props.x}
                 y={props.y}
-                fill="#D97706"
+                fill={COLORS[2]}
               />
             );
           }}
@@ -106,6 +110,8 @@ function VolumeChart({ dailyVolume, isLoading }) {
         <Bar
           dataKey="mint"
           stackId="one"
+          fill={COLORS[3]}
+          name="mint"
           shape={(props) => {
             return (
               <CustomBar
@@ -113,7 +119,23 @@ function VolumeChart({ dailyVolume, isLoading }) {
                 width={props.width}
                 x={props.x}
                 y={props.y}
-                fill="#4B5563"
+                fill={COLORS[3]}
+              />
+            );
+          }}
+        />
+        <Bar
+          dataKey="burn"
+          stackId="one"
+          fill={COLORS[0]}
+          shape={(props) => {
+            return (
+              <CustomBar
+                height={props.height}
+                width={props.width}
+                x={props.x}
+                y={props.y}
+                fill={COLORS[0]}
               />
             );
           }}
@@ -122,54 +144,65 @@ function VolumeChart({ dailyVolume, isLoading }) {
           type="monotone"
           dot={false}
           strokeWidth={3}
-          stroke="#ee64b8"
+          stroke={COLORS[4]}
           dataKey="cumulative"
           yAxisId="right"
-          name="Cumulative"
+          name="cumulative"
         />
-        <Legend />
-      </BarChart>
+        <Legend content={<CustomLegend />} />
+      </ComposedChart>
     </ResponsiveContainer>
   );
 }
 
-function CustomTooltip(props) {
-  let values = props.payload.map(({ dataKey, value }) => ({
+function CustomLegend(props) {
+  let values = props.payload.map(({ dataKey, value, ...rest }) => ({
     name: dataKey,
     value,
     color: "black",
+    ...rest,
   }));
   if (values.length) {
     const newPayload = values.map((v) => {
-      switch (v.name) {
-        case "mint":
-          return {
-            ...v,
-            name: "GLP Mint 👶",
-          };
-        case "burn":
-          return {
-            ...v,
-            name: "GLP Burn 🔥",
-          };
-        case "margin":
-          return {
-            ...v,
-            name: "Margin Trades",
-          };
-        case "swap":
-          return {
-            ...v,
-            name: "Token Swaps",
-          };
-        default:
-          return {};
-      }
+      return {
+        ...v,
+        name: chartLabels[v.name],
+      };
     });
-
-    return <DefaultTooltipContent {...props} payload={newPayload} />;
+    return (
+      <div className="text-center mt-4 mb-2">
+        {newPayload.map((p) => (
+          <div className="inline-flex items-center mr-2">
+            <span
+              className="p-2 w-2 inline-block mr-2"
+              style={{ backgroundColor: p.color }}
+            ></span>
+            <dt className="text-sm font-medium text-gray-500">{p.name}</dt>
+          </div>
+        ))}
+      </div>
+    );
   }
-  return <DefaultTooltipContent {...props} />;
+  return <></>;
+}
+
+function CustomTooltip(props) {
+  let values = props.payload.map(({ dataKey, value, ...rest }) => ({
+    name: dataKey,
+    value,
+    color: "black",
+    ...rest,
+  }));
+  if (values.length) {
+    const newPayload = values.map((v) => {
+      return {
+        ...v,
+        name: chartLabels[v.name],
+      };
+    });
+    return <ToolTipCard {...props} payload={newPayload} />;
+  }
+  return <ToolTipCard {...props} />;
 }
 
 function Badge(props) {
@@ -184,6 +217,46 @@ function Badge(props) {
       </svg>
       {props.label}
     </span>
+  );
+}
+
+function ToolTipCard({ label, payload, formatter }) {
+  return (
+    <section
+      className="shadow-lg hidden sm:block"
+      aria-labelledby="achart-tooltip"
+    >
+      <div className="bg-white shadow-xl sm:rounded-lg">
+        <div className="px-4 py-5 sm:px-6">
+          <h2
+            id="achart-tooltip"
+            className="text-lg leading-6 font-medium text-gray-900"
+          >
+            {toNiceDateYear(label)}
+          </h2>
+        </div>
+        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+          <dl className="grid gap-x-4 gap-y-6 grid-cols-2">
+            {payload.map((p) => (
+              <div className="sm:col-span-1">
+                <div className="inline-flex items-center">
+                  <span
+                    className="p-2 w-2 inline-block mr-2"
+                    style={{ backgroundColor: p.color }}
+                  ></span>
+                  <dt className="text-sm font-medium text-gray-500">
+                    {p.name}
+                  </dt>
+                </div>
+                <dd className="mt-1 text-sm text-gray-900">
+                  {formatter(p.value)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
   );
 }
 

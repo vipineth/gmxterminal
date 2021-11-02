@@ -17,3 +17,19 @@ export const navigation = [
 export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
+export const COLORS = [
+  "#ef4544", // red
+  "#f99615", // yelllow
+  "#875ef4", // purple
+  "#059669", // green
+  "#1f2938", // black
+];
+
+export const chartLabels = {
+  mint: "Mint GLP",
+  burn: "Burn GLP",
+  margin: "Margin Trade",
+  swap: "Token Swap",
+  cumulative: "Cumulative Volume",
+};

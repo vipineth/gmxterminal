@@ -17,7 +17,7 @@ export default function Example() {
           Daily Volume
         </h2>
         <div className="py-4">
-          <div className="shadow px-4 border rounded-lg h-96 bg-white">
+          <div className="shadow px-2 pt-6 pb-2 border rounded-lg h-96 bg-white">
             <VolumeChart dailyVolume={dailyVolume} isLoading={isLoading} />
           </div>
         </div>

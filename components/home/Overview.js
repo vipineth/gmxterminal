@@ -9,7 +9,11 @@ import { CurrencyDollarIcon } from "@heroicons/react/solid";
 
 import useTotalData from "hooks/useTotalData";
 import { Fragment, useState } from "react";
-import ReactTooltip from "react-tooltip";
+import dynamic from "next/dynamic";
+
+const ReactTooltip = dynamic(() => import("react-tooltip"), {
+  ssr: false,
+});
 
 const stats = [
   {

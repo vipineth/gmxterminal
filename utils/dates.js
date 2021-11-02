@@ -8,7 +8,7 @@ import { cloneDeep } from "lodash";
 import { ethers } from "ethers";
 
 export const toK = (num) => {
-  return "$ " + Numeral(num).format("0,0.[00]a");
+  return "$" + Numeral(num).format("0,0.[00]a");
 };
 
 export const toKWithoutDollar = (num) => {
