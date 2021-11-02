@@ -5,6 +5,7 @@ import format from "date-fns/format";
 
 import fromUnixTime from "date-fns/fromUnixTime";
 import { cloneDeep } from "lodash";
+import { ethers } from "ethers";
 
 export const toK = (num) => {
   return "$ " + Numeral(num).format("0,0.[00]a");
@@ -46,6 +47,10 @@ export const getSmallAddress = (address, width = 5) => {
 
 export function getBigNumber(value) {
   return new BigNumber(value).shiftedBy(18).toString();
+}
+
+export function bigNumberify(n) {
+  return ethers.BigNumber.from(n);
 }
 
 export function getSmallNumber(value) {
