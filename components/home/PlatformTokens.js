@@ -57,7 +57,7 @@ export default function PlatformTokens() {
                     </dt>
                   </div>
                   <dd className="mt-1 text-sm text-gray-900">
-                    $ {formatAmount(gmxPrice.priceInUSD, 30, 2, true)}
+                    $ {formatAmount(gmxPrice?.priceInUSD, 30, 2, true)}
                   </dd>
                 </div>
                 <div className="sm:col-span-1">
@@ -68,7 +68,7 @@ export default function PlatformTokens() {
                     </dt>
                   </div>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {Number(gmxPrice.priceInEth).toFixed(4)} ETH
+                    {Number(gmxPrice?.priceInEth).toFixed(4)} ETH
                   </dd>
                 </div>
                 <div className="sm:col-span-1">
