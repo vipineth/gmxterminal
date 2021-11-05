@@ -2,7 +2,6 @@ import AddTitle from "components/common/AddTitle";
 import useTokens from "hooks/useTokens";
 import { formatAmount } from "utils/format";
 
-/* This example requires Tailwind CSS v2.0+ */
 const people = [
   {
     name: "Jane Cooper",

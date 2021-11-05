@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { classNames, navigation } from "../../utils/config";
 import Link from "next/link";
 

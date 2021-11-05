@@ -2,7 +2,7 @@ import { InformationCircleIcon } from "@heroicons/react/outline";
 import AddTitle from "components/common/AddTitle";
 import useGLPStats from "hooks/useGLPStats";
 import useGMXInfo from "hooks/useGMXInfo.js";
-import { getSmallNumber, toK, toKWithoutDollar } from "utils/dates";
+import { toK, toKWithoutDollar } from "utils/dates";
 import { formatAmount } from "utils/format";
 
 function classNames(...classes) {

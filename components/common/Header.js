@@ -3,7 +3,6 @@ import {
   ChevronDownIcon,
   LinkIcon,
   MenuAlt1Icon,
-  MenuAlt2Icon,
   SearchIcon,
 } from "@heroicons/react/outline";
 import { useWallet } from "components/context/WalletContext";
