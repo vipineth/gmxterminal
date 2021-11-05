@@ -9,7 +9,7 @@ import {
 } from "utils/dates";
 import { formatAmount } from "utils/format";
 import { getHourlyFees, getTVL } from "utils/query";
-import { fetcher, GMXStatsFetcher } from "./fetcher";
+import { fetcher, gmxStatsFetcher } from "./fetcher";
 import { TOTAL_VOLUME } from "./urls";
 
 function getTotalVolumeSum(volumes) {
@@ -19,7 +19,7 @@ function getTotalVolumeSum(volumes) {
 
   let volume = bigNumberify(0);
   for (let i = 0; i < volumes.length; i++) {
-    volume = volume.add(volumes[i].data.volume);
+    volume = volume.plus(volumes[i].data.volume);
   }
 
   return volume;
@@ -27,8 +27,8 @@ function getTotalVolumeSum(volumes) {
 
 export default function useTotalData() {
   let { data: totalVolumeList } = useSWR(TOTAL_VOLUME, fetcher);
-  let { data: hourlyFees } = useSWR(getHourlyFees, GMXStatsFetcher);
-  let { data: tvl } = useSWR(getTVL, GMXStatsFetcher);
+  let { data: hourlyFees } = useSWR(getHourlyFees, gmxStatsFetcher);
+  let { data: tvl } = useSWR(getTVL, gmxStatsFetcher);
 
   let initialValue = {
     burn: bigNumberify(0),
@@ -43,12 +43,12 @@ export default function useTotalData() {
     let final = hourlyFees?.f1.concat(hourlyFees.f2).reduce((acc, v) => {
       let keys = Object.keys(v).filter((a) => a !== "id");
       keys.forEach((key) => {
-        acc[key] = acc[key]?.add(v[key]);
+        acc[key] = acc[key]?.plus(v[key]);
       });
       return acc;
     }, initialValue);
 
-    totalFees = Object.values(final).reduce((a, b) => a.add(b));
+    totalFees = Object.values(final).reduce((a, b) => a.plus(b));
   }
 
   return {

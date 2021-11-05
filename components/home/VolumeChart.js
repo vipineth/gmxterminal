@@ -1,21 +1,18 @@
+import { CustomResponsiveContainer } from "components/common/CustomResponsiveContainer";
 import {
-  BarChart,
   Bar,
   XAxis,
   Tooltip,
-  ResponsiveContainer,
   Line,
   YAxis,
   Legend,
   CartesianGrid,
-  CartesianAxis,
   ComposedChart,
-  Text,
 } from "recharts";
-import { DefaultTooltipContent } from "recharts/lib/component/DefaultTooltipContent";
+
 import { chartLabels, COLORS } from "utils/config";
 
-import { toK, toKWithoutDollar, toNiceDate, toNiceDateYear } from "utils/dates";
+import { toK, toNiceDate, toNiceDateYear } from "utils/dates";
 
 function CustomBar({ x, y, width, height, fill }) {
   return (
@@ -26,12 +23,9 @@ function CustomBar({ x, y, width, height, fill }) {
 }
 
 function VolumeChart({ dailyVolume, isLoading }) {
-  if (!dailyVolume) {
-    return <h2>Loading</h2>;
-  }
   return (
-    <ResponsiveContainer width="100%">
-      <ComposedChart data={dailyVolume}>
+    <CustomResponsiveContainer height="100%">
+      <ComposedChart data={dailyVolume} className="pt-2 pb-12">
         <XAxis
           dataKey="timestamp"
           tickFormatter={(d) => toNiceDate(d)}
@@ -74,6 +68,7 @@ function VolumeChart({ dailyVolume, isLoading }) {
           }}
           wrapperStyle={{ top: -70, left: -10 }}
         />
+        <Legend content={<CustomLegend />} />
 
         <Bar
           dataKey="swap"
@@ -149,9 +144,8 @@ function VolumeChart({ dailyVolume, isLoading }) {
           yAxisId="right"
           name="cumulative"
         />
-        <Legend content={<CustomLegend />} />
       </ComposedChart>
-    </ResponsiveContainer>
+    </CustomResponsiveContainer>
   );
 }
 
@@ -172,7 +166,7 @@ function CustomLegend(props) {
     return (
       <div className="text-center mt-4 mb-2">
         {newPayload.map((p) => (
-          <div className="inline-flex items-center mr-2">
+          <div key={p.name} className="inline-flex items-center mr-2">
             <span
               className="p-2 w-2 inline-block mr-2"
               style={{ backgroundColor: p.color }}
@@ -187,7 +181,7 @@ function CustomLegend(props) {
 }
 
 function CustomTooltip(props) {
-  let values = props.payload.map(({ dataKey, value, ...rest }) => ({
+  let values = props.payload?.map(({ dataKey, value, ...rest }) => ({
     name: dataKey,
     value,
     color: "black",
@@ -203,21 +197,6 @@ function CustomTooltip(props) {
     return <ToolTipCard {...props} payload={newPayload} />;
   }
   return <ToolTipCard {...props} />;
-}
-
-function Badge(props) {
-  return (
-    <span className="inline-flex items-center px-3 py-1.5 rounded font-medium bg-gray-800 text-white mb-4 uppercase text-xs">
-      <svg
-        className="-ml-1 mr-1.5 h-2 w-2 text-white"
-        fill="currentColor"
-        viewBox="0 0 8 8"
-      >
-        <circle cx={4} cy={4} r={3} />
-      </svg>
-      {props.label}
-    </span>
-  );
 }
 
 function ToolTipCard({ label, payload, formatter }) {
@@ -238,7 +217,7 @@ function ToolTipCard({ label, payload, formatter }) {
         <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
           <dl className="grid gap-x-4 gap-y-6 grid-cols-2">
             {payload.map((p) => (
-              <div className="sm:col-span-1">
+              <div key={p.name} className="sm:col-span-1">
                 <div className="inline-flex items-center">
                   <span
                     className="p-2 w-2 inline-block mr-2"

@@ -39,3 +39,25 @@ export function getTVL() {
     }
   `;
 }
+
+export const getGmxPrice = gql`
+  query getGmxPriceFromUniswap($address: String!) {
+    pools(where: { id: $address }) {
+      token1 {
+        derivedETH
+        decimals
+        name
+        symbol
+      }
+    }
+  }
+`;
+export const getGlpStats = gql`
+  query getStats($first: Int = 1) {
+    hourlyGlpStats(orderBy: id, orderDirection: desc, first: $first) {
+      id
+      aumInUsdg
+      glpSupply
+    }
+  }
+`;

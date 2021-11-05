@@ -1,4 +1,6 @@
+import BigNumber from "bignumber.js";
 import { ethers } from "ethers";
+import { bigNumberify } from "./dates";
 
 export function numberWithCommas(x) {
   if (!x) {
@@ -29,6 +31,26 @@ export const limitDecimals = (amount, maxDecimals) => {
   }
   return amountStr;
 };
+export const padDecimals = (amount, minDecimals) => {
+  let amountStr = amount.toString();
+  const dotIndex = amountStr.indexOf(".");
+  if (dotIndex !== -1) {
+    const decimals = amountStr.length - dotIndex - 1;
+    if (decimals < minDecimals) {
+      amountStr = amountStr.padEnd(
+        amountStr.length + (minDecimals - decimals),
+        "0"
+      );
+    }
+  } else {
+    amountStr = amountStr + ".0000";
+  }
+  return amountStr;
+};
+
+export function expandDecimals(n, decimals) {
+  return bigNumberify(n).multipliedBy(bigNumberify(10).pow(decimals));
+}
 
 export const formatAmount = (
   amount,
@@ -46,29 +68,16 @@ export const formatAmount = (
   if (displayDecimals === undefined) {
     displayDecimals = 4;
   }
-  let amountStr = ethers.utils.formatUnits(amount, tokenDecimals);
+  let amountStr = new BigNumber(amount)
+    .shiftedBy(-tokenDecimals)
+    .decimalPlaces(displayDecimals)
+    .toString();
   amountStr = limitDecimals(amountStr, displayDecimals);
   if (displayDecimals !== 0) {
     amountStr = padDecimals(amountStr, displayDecimals);
   }
   if (useCommas) {
     return numberWithCommas(amountStr);
-  }
-  return amountStr;
-};
-export const padDecimals = (amount, minDecimals) => {
-  let amountStr = amount.toString();
-  const dotIndex = amountStr.indexOf(".");
-  if (dotIndex !== -1) {
-    const decimals = amountStr.length - dotIndex - 1;
-    if (decimals < minDecimals) {
-      amountStr = amountStr.padEnd(
-        amountStr.length + (minDecimals - decimals),
-        "0"
-      );
-    }
-  } else {
-    amountStr = amountStr + ".0000";
   }
   return amountStr;
 };

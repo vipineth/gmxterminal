@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const defaultFetcher = (url) => fetch(url).then((res) => res.json());
 
-export function useRequest(url, defaultValue, fetcher = defaultFetcher) {
+export function useFetch(url, defaultValue, fetcher = defaultFetcher, update) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [data, setData] = useState(defaultValue);
@@ -17,7 +17,7 @@ export function useRequest(url, defaultValue, fetcher = defaultFetcher) {
       setError(err);
     }
     setLoading(false);
-  }, [url]);
+  }, [url, update]);
 
   return [data, loading, error];
 }

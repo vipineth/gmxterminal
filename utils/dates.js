@@ -50,7 +50,7 @@ export function getBigNumber(value) {
 }
 
 export function bigNumberify(n) {
-  return ethers.BigNumber.from(n);
+  return new BigNumber(n);
 }
 
 export function getSmallNumber(value) {

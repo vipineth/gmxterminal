@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { useRequest } from "./useFetch";
+import { useFetch } from "./useFetch";
 
-export function useDailyVolume() {
+export function useDailyVolume(type = "daily") {
   const PROPS = "margin liquidation swap mint burn".split(" ");
-  const [data, loading] = useRequest(
-    "https://gmx-server-mainnet.uw.r.appspot.com/daily_volume",
+  const [data, loading] = useFetch(
+    `https://gmx-server-mainnet.uw.r.appspot.com/${type}_volume`,
     null,
     async (url) => {
       let after;
@@ -17,7 +17,8 @@ export function useDailyVolume() {
         ret.push(...res);
         after = res[res.length - 1].id;
       }
-    }
+    },
+    type
   );
 
   const ret = useMemo(() => {

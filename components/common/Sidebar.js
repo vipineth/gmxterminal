@@ -2,6 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import { Fragment, useState } from "react";
 import { classNames, navigation } from "../../utils/config";
+import Link from "next/link";
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
   return (
@@ -62,11 +63,20 @@ function Mobile({ sidebarOpen, setSidebarOpen }) {
               </div>
             </Transition.Child>
             <div className="flex-shrink-0 flex items-center px-4">
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-                alt="Workflow"
-              />
+              <Link href="/">
+                <a>
+                  <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
+                    <img
+                      className="h-8 w-auto"
+                      src="/images/gmx-logo.png"
+                      alt="GMXTerminal"
+                    />
+                    <p className="uppercase text-white text-lg ml-2 tracking-wider">
+                      GMXTerminal
+                    </p>
+                  </div>
+                </a>
+              </Link>
             </div>
             <div className="mt-5 flex-1 h-0 overflow-y-auto">
               <nav className="px-2 space-y-1">
@@ -109,15 +119,21 @@ function Desktop() {
   return (
     <div className="hidden md:flex md:flex-shrink-0">
       <div className="flex flex-col w-64">
-        {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex-1 flex flex-col min-h-0">
-          <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
-            <img
-              className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-              alt="Workflow"
-            />
-          </div>
+          <Link href="/">
+            <a>
+              <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
+                <img
+                  className="h-8 w-auto"
+                  src="/images/gmx-logo.png"
+                  alt="GMXTerminal"
+                />
+                <p className="uppercase text-white text-lg ml-2 tracking-wider">
+                  GMXTerminal
+                </p>
+              </div>
+            </a>
+          </Link>
           <div className="flex-1 flex flex-col overflow-y-auto">
             <nav className="flex-1 px-2 py-4 bg-gray-800 space-y-1">
               {navigation.map((item) => (

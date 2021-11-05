@@ -33,3 +33,8 @@ export const chartLabels = {
   swap: "Token Swap",
   cumulative: "Cumulative Volume",
 };
+
+export const volumeFilterLabels = {
+  daily: "Daily",
+  weekly: "Weekly",
+};

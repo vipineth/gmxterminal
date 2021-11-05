@@ -8,7 +8,7 @@ export default function Layout({ children, shadow }) {
     <div className="relative h-screen flex overflow-hidden bg-gray-100">
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className="flex-1 overflow-auto focus:outline-none">
-        <Header />
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <div className="mb-8">{children}</div>
       </div>
     </div>

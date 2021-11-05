@@ -31,7 +31,7 @@ export default function Header({ sidebarOpen, setSidebarOpen, shadow = true }) {
         <MenuAlt1Icon className="h-6 w-6" aria-hidden="true" />
       </button>
       {/* Search bar */}
-      <div className="flex-1 px-4 flex items-center justify-between sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
+      <div className="flex-1 px-4 flex items-center justify-between sm:px-6 lg:max-w-7xl lg:mx-auto lg:px-8">
         <div className="flex-1 flex">
           <form className="w-full flex md:ml-0" action="#" method="GET">
             <label htmlFor="search-field" className="sr-only">
@@ -60,7 +60,7 @@ export default function Header({ sidebarOpen, setSidebarOpen, shadow = true }) {
           <button
             type="button"
             onClick={wallet?.connect}
-            className="inline-flex items-center px-3 py-3 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="inline-flex items-center px-3 py-3 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
           >
             <LinkIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
             Connect to a wallet
