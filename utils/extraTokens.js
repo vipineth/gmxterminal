@@ -28,4 +28,10 @@ export default {
     name: "FTX Token",
     logoURI: "https://assets.coingecko.com/coins/images/9026/small/F.png",
   },
+  MIM: {
+    symbol: "MIM",
+    name: "Magic Internet Money",
+    logoURI:
+      "https://assets.coingecko.com/coins/images/16786/small/mimlogopng.png",
+  },
 };

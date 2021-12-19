@@ -2,6 +2,14 @@ import request from "graphql-request";
 
 export let fetcher = (...args) => fetch(...args).then((res) => res.json());
 
+export function gmxVaultFetcher(query, variables) {
+  return request(
+    `https://api.thegraph.com/subgraphs/name/nissoh/gmx-vault`,
+    query,
+    variables
+  );
+}
+
 export function gmxStatsFetcher(query, variables) {
   return request(
     `https://api.thegraph.com/subgraphs/name/gmx-io/gmx-stats`,

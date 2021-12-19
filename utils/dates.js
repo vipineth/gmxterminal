@@ -1,48 +1,48 @@
-import BigNumber from "bignumber.js";
+import BigNumber from 'bignumber.js';
 
-import Numeral from "numeral";
-import format from "date-fns/format";
+import Numeral from 'numeral';
+import format from 'date-fns/format';
 
-import fromUnixTime from "date-fns/fromUnixTime";
-import { cloneDeep } from "lodash";
-import { ethers } from "ethers";
+import fromUnixTime from 'date-fns/fromUnixTime';
+import { cloneDeep } from 'lodash';
+import { ethers } from 'ethers';
 
 export const toK = (num) => {
-  return "$" + Numeral(num).format("0,0.[00]a");
+  return '$' + Numeral(num).format('0,0.[00]a');
 };
 
 export const toKWithoutDollar = (num) => {
-  return Numeral(num).format("0,0.[00]a");
+  return Numeral(num).format('0,0.[00]a');
 };
 
 export const toNiceDateYear = (date) => {
   if (isNaN(Number(date))) {
-    return "";
+    return '';
   }
-  return format(fromUnixTime(date), "MMMM dd, yyy");
+  return format(fromUnixTime(date), 'MMMM dd, yyy');
 };
 export const toNiceDateHourMinutes = (date) => {
   if (isNaN(Number(date))) {
-    return "";
+    return '';
   }
-  return format(fromUnixTime(date), "Pp");
+  return format(fromUnixTime(date), 'Pp');
 };
 export const toNiceDateInWords = (date) => {
   if (isNaN(Number(date))) {
-    return "";
+    return '';
   }
-  return format(fromUnixTime(date), "ccc, do MMM - H:m aaa");
+  return format(fromUnixTime(date), 'ccc, do MMM - H:m aaa');
 };
 
 export const toNiceDate = (date) => {
   if (isNaN(Number(date))) {
-    return "";
+    return '';
   }
-  return format(fromUnixTime(date), "d MMM");
+  return format(fromUnixTime(date), 'd MMM');
 };
 export const getSmallAddress = (address, width = 5) => {
   if (!address) return;
-  return address.slice(0, width) + "..." + address.slice(-width);
+  return address.slice(0, width) + '...' + address.slice(-width);
 };
 
 export function getBigNumber(value) {
@@ -54,10 +54,7 @@ export function bigNumberify(n) {
 }
 
 export function getSmallNumber(value) {
-  return new BigNumber(value)
-    .shiftedBy(-18)
-    .decimalPlaces(2)
-    .toNumber();
+  return new BigNumber(value).shiftedBy(-18).decimalPlaces(2).toNumber();
 }
 
 export function sleep(milliseconds) {
@@ -76,7 +73,7 @@ export function percentageDifference(a, b) {
 export function numberWithCommas(x) {
   return Number(x)
     .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export function calculateStats(stats) {
@@ -133,22 +130,22 @@ export function getUserStatsInfo(userStats) {
   if (userStats) {
     return [
       {
-        label: "Total Trade Volume",
+        label: 'Total Trade Volume',
         amount: toK(getSmallNumber(userStats.totalVolume)),
       },
       {
-        label: "Total Number of Trades",
+        label: 'Total Number of Trades',
         amount: numberWithCommas(userStats.totalTrades),
       },
       {
-        label: "Total PnL (Excluding Fees)",
+        label: 'Total PnL (Excluding Fees)',
         amount: toK(getSmallNumber(userStats.totalPnL)),
       },
     ];
   }
 }
 
-export function isAddress(address = "") {
+export function isAddress(address = '') {
   if (address) {
     let trimmedAddress = address.trim();
     return /^(0x){1}[0-9a-fA-F]{40}$/i.test(trimmedAddress);
@@ -156,7 +153,7 @@ export function isAddress(address = "") {
 }
 
 export function isBrowser() {
-  return ![typeof window, typeof document].includes("undefined");
+  return ![typeof window, typeof document].includes('undefined');
 }
 export async function addAmmInfo() {
   const response = await fetch(
@@ -167,9 +164,9 @@ export async function addAmmInfo() {
   } = await response.json();
 
   let names = Object.keys(layer2?.contracts).reduce((acc, cv) => {
-    if (cv.endsWith("USDC")) {
+    if (cv.endsWith('USDC')) {
       acc[layer2.contracts[cv].address.toLowerCase()] = {
-        symbol: cv.replace("USDC", ""),
+        symbol: cv.replace('USDC', ''),
         address: layer2.contracts[cv].address.toLowerCase(),
       };
       return acc;
@@ -177,9 +174,9 @@ export async function addAmmInfo() {
     return acc;
   }, {});
   if (isBrowser()) {
-    localStorage.setItem("perp-info", JSON.stringify(names));
+    localStorage.setItem('perp-info', JSON.stringify(names));
   }
 }
 
 export const usdcIcon =
-  "https://assets.trustwalletapp.com/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png";
+  'https://assets.trustwalletapp.com/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png';

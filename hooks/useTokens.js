@@ -39,8 +39,13 @@ function useTokens() {
         });
       })
   );
+  function getTokenInfo(address) {
+    return tokens.find(
+      (t) => t.address.toLowerCase() === address.toLowerCase()
+    );
+  }
 
-  return [tokens, loading];
+  return { tokens, loading, getTokenInfo };
 }
 
 export default useTokens;

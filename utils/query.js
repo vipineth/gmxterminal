@@ -1,4 +1,4 @@
-import { gql } from "graphql-request";
+import { gql } from 'graphql-request';
 
 export function getHourlyFees() {
   return gql`
@@ -39,6 +39,20 @@ export function getTVL() {
     }
   `;
 }
+export function getTopTraders() {
+  return gql`
+    query TopTraders {
+      accountAggregations(
+        first: 21
+        orderBy: totalRealisedPnl
+        orderDirection: desc
+      ) {
+        id
+        totalRealisedPnl
+      }
+    }
+  `;
+}
 
 export const getGmxPrice = gql`
   query getGmxPriceFromUniswap($address: String!) {
@@ -58,6 +72,260 @@ export const getGlpStats = gql`
       id
       aumInUsdg
       glpSupply
+    }
+  }
+`;
+export const getOpenPositions = gql`
+  query OpenPositions($account: String!) {
+    aggregatedTradeOpens(where: { account: $account }) {
+      id
+      account
+      decreaseList {
+        id
+        account
+        collateralDelta
+        collateralToken
+        fee
+        indexToken
+        indexedAt
+        isLong
+        key
+        price
+        sizeDelta
+      }
+      increaseList {
+        account
+        collateralDelta
+        id
+        fee
+        collateralToken
+        sizeDelta
+        price
+        key
+        isLong
+        indexedAt
+        indexToken
+      }
+      initialPosition {
+        account
+        id
+        isLong
+        price
+        collateralDelta
+        collateralToken
+        fee
+        indexToken
+        indexedAt
+        key
+        sizeDelta
+      }
+      updateList {
+        size
+        collateral
+        averagePrice
+        entryFundingRate
+        id
+        indexedAt
+        key
+        realisedPnl
+        reserveAmount
+      }
+    }
+  }
+`;
+export const getUserPositions = gql`
+  query AllPositions($account: String!) {
+    accountAggregation(id: $account) {
+      aggregatedTradeCloseds {
+        account
+        decreaseList {
+          account
+          collateralDelta
+          collateralToken
+          fee
+          id
+          indexToken
+          indexedAt
+          isLong
+          key
+          price
+          sizeDelta
+        }
+        id
+        increaseList {
+          account
+          collateralDelta
+          collateralToken
+          fee
+          id
+          indexToken
+          indexedAt
+          isLong
+          key
+          price
+          sizeDelta
+        }
+        initialPosition {
+          account
+          collateralDelta
+          collateralToken
+          fee
+          id
+          indexToken
+          indexedAt
+          isLong
+          key
+          price
+          sizeDelta
+        }
+        initialPositionBlockTimestamp
+        settledPosition {
+          averagePrice
+          collateral
+          entryFundingRate
+          id
+          indexedAt
+          key
+          realisedPnl
+          reserveAmount
+          size
+        }
+        updateList {
+          averagePrice
+          collateral
+          entryFundingRate
+          id
+          indexedAt
+          key
+          realisedPnl
+          reserveAmount
+          size
+        }
+      }
+      aggregatedTradeLiquidateds {
+        account
+        decreaseList {
+          account
+          collateralDelta
+          collateralToken
+          fee
+          id
+          indexToken
+          indexedAt
+          isLong
+          key
+          price
+          sizeDelta
+        }
+        increaseList {
+          account
+          collateralDelta
+          collateralToken
+          fee
+          id
+          indexToken
+          indexedAt
+          isLong
+          key
+          price
+          sizeDelta
+        }
+        indexedAt
+        initialPosition {
+          account
+          collateralDelta
+          collateralToken
+          fee
+          id
+          indexToken
+          indexedAt
+          isLong
+          key
+          price
+          sizeDelta
+        }
+        settledPosition {
+          account
+          collateral
+          collateralToken
+          id
+          indexToken
+          indexedAt
+          isLong
+          key
+          markPrice
+          realisedPnl
+          reserveAmount
+          size
+        }
+        updateList {
+          averagePrice
+          collateral
+          entryFundingRate
+          id
+          indexedAt
+          key
+          realisedPnl
+          reserveAmount
+          size
+        }
+      }
+      aggregatedTradeOpens {
+        account
+        decreaseList {
+          account
+          collateralDelta
+          collateralToken
+          fee
+          id
+          indexToken
+          indexedAt
+          isLong
+          key
+          price
+          sizeDelta
+        }
+        increaseList {
+          account
+          collateralDelta
+          collateralToken
+          fee
+          id
+          indexToken
+          indexedAt
+          isLong
+          key
+          price
+          sizeDelta
+        }
+        initialPosition {
+          account
+          collateralDelta
+          collateralToken
+          fee
+          id
+          indexToken
+          indexedAt
+          isLong
+          key
+          price
+          sizeDelta
+        }
+        updateList {
+          averagePrice
+          collateral
+          entryFundingRate
+          id
+          indexedAt
+          key
+          realisedPnl
+          reserveAmount
+          size
+        }
+      }
+      indexedAt
+      totalRealisedPnl
+      id
     }
   }
 `;

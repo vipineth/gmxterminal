@@ -1,8 +1,9 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { XIcon } from "@heroicons/react/outline";
-import { Fragment } from "react";
-import { classNames, navigation } from "../../utils/config";
-import Link from "next/link";
+import { Dialog, Transition } from '@headlessui/react';
+import { XIcon } from '@heroicons/react/outline';
+import { Fragment } from 'react';
+import { classNames, navigation } from '../../utils/config';
+import Link from 'next/link';
+import NavLink from './NavLink';
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
   return (
@@ -62,7 +63,7 @@ function Mobile({ sidebarOpen, setSidebarOpen }) {
                 </button>
               </div>
             </Transition.Child>
-            <div className="flex-shrink-0 flex items-center px-4">
+            <div className="flex-shrink-0 flex items-center px-4 mx-auto">
               <Link href="/">
                 <a>
                   <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
@@ -81,27 +82,18 @@ function Mobile({ sidebarOpen, setSidebarOpen }) {
             <div className="mt-5 flex-1 h-0 overflow-y-auto">
               <nav className="px-2 space-y-1">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                      "group flex items-center px-2 py-2 text-base font-medium rounded-md"
-                    )}
-                  >
+                  <NavLink key={item.name} href={item.href}>
                     <item.icon
                       className={classNames(
                         item.current
-                          ? "text-gray-300"
-                          : "text-gray-400 group-hover:text-gray-300",
-                        "mr-4 flex-shrink-0 h-6 w-6"
+                          ? 'text-gray-300'
+                          : 'text-gray-400 group-hover:text-gray-300',
+                        'mr-4 flex-shrink-0 h-6 w-6'
                       )}
                       aria-hidden="true"
                     />
                     {item.name}
-                  </a>
+                  </NavLink>
                 ))}
               </nav>
             </div>
@@ -137,27 +129,18 @@ function Desktop() {
           <div className="flex-1 flex flex-col overflow-y-auto">
             <nav className="flex-1 px-2 py-4 bg-gray-800 space-y-1">
               {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                  )}
-                >
+                <NavLink href={item.href}>
                   <item.icon
                     className={classNames(
                       item.current
-                        ? "text-gray-300"
-                        : "text-gray-400 group-hover:text-gray-300",
-                      "mr-3 flex-shrink-0 h-6 w-6"
+                        ? 'text-gray-300'
+                        : 'text-gray-400 group-hover:text-gray-300',
+                      'mr-4 flex-shrink-0 h-6 w-6'
                     )}
                     aria-hidden="true"
                   />
                   {item.name}
-                </a>
+                </NavLink>
               ))}
             </nav>
           </div>

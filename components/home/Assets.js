@@ -1,49 +1,9 @@
-import AddTitle from "components/common/AddTitle";
-import useTokens from "hooks/useTokens";
-import { formatAmount } from "utils/format";
-
-const people = [
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    department: "Optimization",
-    role: "Admin",
-    email: "jane.cooper1@example.com",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    department: "Optimization",
-    role: "Admin",
-    email: "jane.cooper2@example.com",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    department: "Optimization",
-    role: "Admin",
-    email: "jane.cooper3@example.com",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    department: "Optimization",
-    role: "Admin",
-    email: "jane.cooper4@example.com",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  // More people...
-];
+import AddTitle from 'components/common/AddTitle';
+import useTokens from 'hooks/useTokens';
+import { formatAmount } from 'utils/format';
 
 export default function Assets() {
-  let [tokens, loading] = useTokens();
+  let { tokens, loading } = useTokens();
 
   return (
     <AddTitle title="Trading Assets">
@@ -87,7 +47,7 @@ export default function Assets() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {tokens?.map((token) => (
+                  {tokens?.map(token => (
                     <tr key={token.address}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
@@ -118,14 +78,14 @@ export default function Assets() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="px-2 inline-flex text-sm ">
-                          {"$" + formatAmount(token.usdgAmount, 18, 0, true)}
+                          {'$' + formatAmount(token.usdgAmount, 18, 0, true)}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {token.fundingRate}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        {token.utilization / 100 + "%"}
+                        {(token.utilization / 100).toFixed(4) + '%'}
                       </td>
                     </tr>
                   ))}

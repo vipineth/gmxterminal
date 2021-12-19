@@ -1,14 +1,15 @@
-import BigNumber from "bignumber.js";
-import { ethers } from "ethers";
-import { bigNumberify } from "./dates";
+import BigNumber from 'bignumber.js';
+import { ethers } from 'ethers';
+import { bigNumberify } from './dates';
+import cloneDeep from 'lodash/cloneDeep';
 
 export function numberWithCommas(x) {
   if (!x) {
-    return "...";
+    return '...';
   }
-  var parts = x.toString().split(".");
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return parts.join(".");
+  var parts = x.toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
 }
 
 export const limitDecimals = (amount, maxDecimals) => {
@@ -17,9 +18,9 @@ export const limitDecimals = (amount, maxDecimals) => {
     return amountStr;
   }
   if (maxDecimals === 0) {
-    return amountStr.split(".")[0];
+    return amountStr.split('.')[0];
   }
-  const dotIndex = amountStr.indexOf(".");
+  const dotIndex = amountStr.indexOf('.');
   if (dotIndex !== -1) {
     let decimals = amountStr.length - dotIndex - 1;
     if (decimals > maxDecimals) {
@@ -33,17 +34,17 @@ export const limitDecimals = (amount, maxDecimals) => {
 };
 export const padDecimals = (amount, minDecimals) => {
   let amountStr = amount.toString();
-  const dotIndex = amountStr.indexOf(".");
+  const dotIndex = amountStr.indexOf('.');
   if (dotIndex !== -1) {
     const decimals = amountStr.length - dotIndex - 1;
     if (decimals < minDecimals) {
       amountStr = amountStr.padEnd(
         amountStr.length + (minDecimals - decimals),
-        "0"
+        '0'
       );
     }
   } else {
-    amountStr = amountStr + ".0000";
+    amountStr = amountStr + '.0000';
   }
   return amountStr;
 };
@@ -60,7 +61,7 @@ export const formatAmount = (
   defaultValue
 ) => {
   if (!defaultValue) {
-    defaultValue = "...";
+    defaultValue = '...';
   }
   if (amount === undefined || amount.toString().length === 0) {
     return defaultValue;
@@ -81,3 +82,10 @@ export const formatAmount = (
   }
   return amountStr;
 };
+
+export function compareTwoStrings(a, b) {
+  return String(a).toLowerCase() === String(b).toLowerCase();
+}
+export function sortWithKey(data, key) {
+  return cloneDeep(data).sort((a, b) => b[key] - a[key]);
+}
