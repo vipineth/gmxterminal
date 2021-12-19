@@ -3,8 +3,6 @@ import { useRouter } from 'next/router';
 import { getUserPositions } from 'utils/query';
 import useSWR from 'swr';
 import { gmxVaultFetcher } from 'hooks/fetcher';
-
-import UserSearch from 'components/account/UserSearch';
 import AddAddress from 'components/address-book/AddAddress';
 import SEO from 'components/common/SEO';
 

@@ -14,6 +14,7 @@ import {
   formatOpenTrades,
   getTradersOverview,
 } from 'utils/reformat';
+import SEO from 'components/common/SEO';
 
 function Account(props) {
   let {
