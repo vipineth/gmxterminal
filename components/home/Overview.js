@@ -4,35 +4,35 @@ import {
   QuestionMarkCircleIcon,
   ReceiptTaxIcon,
   ScaleIcon,
-} from "@heroicons/react/outline";
-import { CurrencyDollarIcon } from "@heroicons/react/solid";
+} from '@heroicons/react/outline';
+import { CurrencyDollarIcon } from '@heroicons/react/solid';
 
-import useTotalData from "hooks/useTotalData";
-import { Fragment, useState } from "react";
-import dynamic from "next/dynamic";
+import useTotalData from 'hooks/useTotalData';
+import { Fragment, useState } from 'react';
+import dynamic from 'next/dynamic';
 
-const ReactTooltip = dynamic(() => import("react-tooltip"), {
+const ReactTooltip = dynamic(() => import('react-tooltip'), {
   ssr: false,
 });
 
 const stats = [
   {
-    name: "Total Trading Volume",
+    name: 'Total Trading Volume',
     icon: ChartBarIcon,
-    amount: "$30,659.45",
-    tooltip: "Total trading volume on the exchange",
+    amount: '$30,659.45',
+    tooltip: 'Total trading volume on the exchange',
   },
   {
-    name: "Assets Under Management",
+    name: 'Assets Under Management',
     icon: LockClosedIcon,
-    amount: "$309,525,100",
-    tooltip: "Total value controlled by the protocol (GLP pool)",
+    amount: '$309,525,100',
+    tooltip: 'Total value controlled by the protocol (GLP pool)',
   },
   {
-    name: "Total Revenue",
+    name: 'Total Revenue',
     icon: ReceiptTaxIcon,
-    amount: "$30,659.45",
-    tooltip: "Total revenue of the GMX platform",
+    amount: '$30,659.45',
+    tooltip: 'Total revenue of the GMX platform',
   },
 ];
 
@@ -80,7 +80,7 @@ export default function Overview() {
                     </div>
                     <dd>
                       <div className="text-lg font-boldya text-gray-900 inline-flex items-center">
-                        <CurrencyDollarIcon className="w-6 h-6 mr-1 text-green-500" />{" "}
+                        <CurrencyDollarIcon className="w-6 h-6 mr-1 text-green-500" />{' '}
                         {card.amount}
                       </div>
                     </dd>

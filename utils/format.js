@@ -44,7 +44,7 @@ export const padDecimals = (amount, minDecimals) => {
       );
     }
   } else {
-    amountStr = amountStr + '.0000';
+    amountStr = amountStr + '.00';
   }
   return amountStr;
 };
@@ -56,7 +56,7 @@ export function expandDecimals(n, decimals) {
 export const formatAmount = (
   amount,
   tokenDecimals,
-  displayDecimals,
+  displayDecimals = 2,
   useCommas,
   defaultValue
 ) => {
@@ -66,16 +66,14 @@ export const formatAmount = (
   if (amount === undefined || amount.toString().length === 0) {
     return defaultValue;
   }
-  if (displayDecimals === undefined) {
-    displayDecimals = 4;
-  }
+
   let amountStr = new BigNumber(amount)
     .shiftedBy(-tokenDecimals)
     .decimalPlaces(displayDecimals)
     .toString();
   amountStr = limitDecimals(amountStr, displayDecimals);
   if (displayDecimals !== 0) {
-    amountStr = padDecimals(amountStr, displayDecimals);
+    amountStr = padDecimals(amountStr, 2);
   }
   if (useCommas) {
     return numberWithCommas(amountStr);

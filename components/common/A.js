@@ -7,6 +7,7 @@ export default function A({ className, href, target, children }) {
       }
       href={href}
       target={target}
+      rel={target === '_blank' ? 'noopener noreferrer' : ''}
     >
       {children}
     </a>

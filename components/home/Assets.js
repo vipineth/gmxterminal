@@ -47,7 +47,7 @@ export default function Assets() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {tokens?.map(token => (
+                  {tokens?.map((token) => (
                     <tr key={token.address}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
@@ -70,7 +70,7 @@ export default function Assets() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          {formatAmount(token.maxPrice, 30, 2, true)}
+                          $ {formatAmount(token.maxPrice, 30, 2, true)}
                         </div>
                         {/* <div className="text-sm text-gray-500">
                           {token.liqMaxPrice}
@@ -82,10 +82,10 @@ export default function Assets() {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {token.fundingRate}
+                        {(token.weight / 1000).toFixed(2) + '%'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        {(token.utilization / 100).toFixed(4) + '%'}
+                        {(token.utilization / 100).toFixed(2) + '%'}
                       </td>
                     </tr>
                   ))}
