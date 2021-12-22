@@ -1,12 +1,12 @@
-import { InformationCircleIcon } from "@heroicons/react/outline";
-import AddTitle from "components/common/AddTitle";
-import useGLPStats from "hooks/useGLPStats";
-import useGMXInfo from "hooks/useGMXInfo.js";
-import { toK, toKWithoutDollar } from "utils/dates";
-import { formatAmount } from "utils/format";
+import { InformationCircleIcon } from '@heroicons/react/outline';
+import AddTitle from 'components/common/AddTitle';
+import useGLPStats from 'hooks/useGLPStats';
+import useGMXInfo from 'hooks/useGMXInfo.js';
+import { toK, toKWithoutDollar } from 'utils/dates';
+import { formatAmount } from 'utils/format';
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 // flex items-center space-x-4 p-6 md:px-10 md:py-6  rounded-b-xl leading-6 font-semibold
@@ -79,7 +79,7 @@ export default function PlatformTokens() {
                     </dt>
                   </div>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {toK(formatAmount(gmxSupply, 18, 2, true))}
+                    {toKWithoutDollar(formatAmount(gmxSupply, 18, 2, true))}
                   </dd>
                 </div>
                 <div className="sm:col-span-1">
