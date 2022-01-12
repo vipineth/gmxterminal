@@ -1,16 +1,17 @@
-import { groupBy } from "lodash";
-import { useState } from "react";
-import useSWR from "swr";
+import { groupBy } from 'lodash';
+import { useMemo, useState } from 'react';
+import useSWR from 'swr';
 import {
   bigNumberify,
   getSmallAddress,
   getSmallNumber,
-  toK,
-} from "utils/dates";
-import { formatAmount } from "utils/format";
-import { getHourlyFees, getTVL } from "utils/query";
-import { fetcher, gmxStatsFetcher } from "./fetcher";
-import { TOTAL_VOLUME } from "./urls";
+  toK
+} from 'utils/dates';
+import { formatAmount } from 'utils/format';
+import { getHourlyFees, getTotalFees, getTVL } from 'utils/query';
+import { fetcher, gmxStatsFetcher } from './fetcher';
+import { TOTAL_VOLUME } from './urls';
+import { useFeesData } from './useFeesData';
 
 function getTotalVolumeSum(volumes) {
   if (!volumes || volumes.length === 0) {
@@ -27,33 +28,23 @@ function getTotalVolumeSum(volumes) {
 
 export default function useTotalData() {
   let { data: totalVolumeList } = useSWR(TOTAL_VOLUME, fetcher);
-  let { data: hourlyFees } = useSWR(getHourlyFees, gmxStatsFetcher);
+  //   let { data: fees } = useSWR(getTotalFees, gmxStatsFetcher);
   let { data: tvl } = useSWR(getTVL, gmxStatsFetcher);
-
-  let initialValue = {
-    burn: bigNumberify(0),
-    liquidation: bigNumberify(0),
-    margin: bigNumberify(0),
-    mint: bigNumberify(0),
-    swap: bigNumberify(0),
-  };
-  let totalFees;
-
-  if (hourlyFees) {
-    let final = hourlyFees?.f1.concat(hourlyFees.f2).reduce((acc, v) => {
-      let keys = Object.keys(v).filter((a) => a !== "id");
-      keys.forEach((key) => {
-        acc[key] = acc[key]?.plus(v[key]);
-      });
-      return acc;
-    }, initialValue);
-
-    totalFees = Object.values(final).reduce((a, b) => a.plus(b));
-  }
+  const [feesData, feesLoading] = useFeesData();
+  const [totalFees, totalFeesDelta] = useMemo(() => {
+    if (!feesData) {
+      return [];
+    }
+    const total = feesData[feesData.length - 1]?.cumulative;
+    const delta = total - feesData[feesData.length - 2]?.cumulative;
+    return [total, delta];
+  }, [feesData]);
+  console.log({ totalFees });
 
   return {
     volume: formatAmount(getTotalVolumeSum(totalVolumeList), 30, 0, true),
-    fees: formatAmount(totalFees, 30, 0, true),
-    tvl: formatAmount(tvl?.hourlyGlpStats[0]?.aumInUsdg, 18, 0, true),
+    fees: formatAmount(totalFees, 0, 0, true),
+    feesDelta: formatAmount(totalFeesDelta, 0, 0, true),
+    tvl: formatAmount(tvl?.hourlyGlpStats[0]?.aumInUsdg, 18, 0, true)
   };
 }

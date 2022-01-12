@@ -3,7 +3,7 @@ import {
   LockClosedIcon,
   QuestionMarkCircleIcon,
   ReceiptTaxIcon,
-  ScaleIcon,
+  ScaleIcon
 } from '@heroicons/react/outline';
 import { CurrencyDollarIcon } from '@heroicons/react/solid';
 
@@ -12,7 +12,7 @@ import { Fragment, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 const ReactTooltip = dynamic(() => import('react-tooltip'), {
-  ssr: false,
+  ssr: false
 });
 
 const stats = [
@@ -20,24 +20,24 @@ const stats = [
     name: 'Total Trading Volume',
     icon: ChartBarIcon,
     amount: '$30,659.45',
-    tooltip: 'Total trading volume on the exchange',
+    tooltip: 'Total trading volume on the exchange'
   },
   {
     name: 'Assets Under Management',
     icon: LockClosedIcon,
     amount: '$309,525,100',
-    tooltip: 'Total value controlled by the protocol (GLP pool)',
+    tooltip: 'Total value controlled by the protocol (GLP pool)'
   },
   {
     name: 'Total Revenue',
     icon: ReceiptTaxIcon,
     amount: '$30,659.45',
-    tooltip: 'Total revenue of the GMX platform',
-  },
+    tooltip: 'Total revenue of the GMX platform'
+  }
 ];
 
 export default function Overview() {
-  let { tvl, volume, fees } = useTotalData();
+  let { tvl, volume, fees, feesDelta } = useTotalData();
 
   let data = [volume, tvl, fees].map((d, i) => {
     return { ...stats[i], amount: d };

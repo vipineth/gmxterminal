@@ -1,5 +1,25 @@
 import { gql } from 'graphql-request';
 
+export function getDailyFees() {
+  return gql`
+    query GetDailyFeeStats($to: Int!) {
+      feeStats(
+        first: 1000
+        orderBy: id
+        orderDirection: desc
+        where: { period: daily, id_gte: 1630348200, id_lte: $to }
+      ) {
+        id
+        margin
+        marginAndLiquidation
+        swap
+        mint
+        burn
+      }
+    }
+  `;
+}
+
 export function getHourlyFees() {
   return gql`
     query HourlyFees {
@@ -329,3 +349,20 @@ export const getUserPositions = gql`
     }
   }
 `;
+
+export function getTotalFees() {
+  return gql`
+    query TotalFees {
+      feeStats(where: { period: total }) {
+        burn
+        id
+        liquidation
+        margin
+        marginAndLiquidation
+        mint
+        period
+        swap
+      }
+    }
+  `;
+}

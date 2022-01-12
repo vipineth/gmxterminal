@@ -1,6 +1,6 @@
-import request from "graphql-request";
+import request from 'graphql-request';
 
-export let fetcher = (...args) => fetch(...args).then((res) => res.json());
+export let fetcher = (...args) => fetch(...args).then(res => res.json());
 
 export function gmxVaultFetcher(query, variables) {
   return request(

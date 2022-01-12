@@ -22,7 +22,7 @@
     "react-tooltip": "^4.2.21",
     "react-use": "^17.3.1",
     "recharts": "2.1.2",
-    "swr": "^1.0.1",
+    "swr": "^1.1.2",
     "use-ssr": "^1.0.24",
     "walletlink": "^2.2.6",
     "web3modal": "^1.9.4"
